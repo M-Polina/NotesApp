@@ -83,6 +83,8 @@ void MyServer::doSendServerMessageToUsers(QString message, const QStringList &us
 
 void MyServer::doSendMessageToUsers(QString message, const QStringList &users, QString fromUsername)
 {
+    qDebug() << "sending private";
+    messagesDatabase[fromUsername].append(users.join(",") + "(private)"+ '\r' + message);
     QByteArray block, blockToSender;
     QDataStream out(&block, QIODevice::WriteOnly);
     out << (quint16)0 << MyClient::comMessageToUsers << fromUsername << message;
@@ -93,6 +95,7 @@ void MyServer::doSendMessageToUsers(QString message, const QStringList &users, Q
     outToSender << (quint16)0 << MyClient::comMessageToUsers << users.join(",") << message;
     outToSender.device()->seek(0);
     outToSender << (quint16)(blockToSender.size() - sizeof(quint16));
+
     for (int j = 0; j < _clients.length(); ++j)
         if (users.contains(_clients.at(j)->getName()))
             _clients.at(j)->_sok->write(block);
@@ -109,15 +112,6 @@ QStringList MyServer::getUsersOnline() const
     return l;
 }
 
-bool MyServer::isNameValid(QString name) const
-{
-    if (name.length() > 20 || name.length() < 3)
-        return false;
-    // QRegularExpression r("[A-Za-z0-9_]+");
-    QRegularExpression version(QRegularExpression::anchoredPattern(QLatin1String("[A-Za-z0-9_]+")));
-
-    return version.match(name).hasMatch();
-}
 
 bool MyServer::isNameUsed(QString name) const
 {

@@ -1,9 +1,7 @@
 #include "myclient.h"
 #include <QWidget>
 #include <QMessageBox>
-// #include <qjson/parser.h>
-// #include "json.hpp"
-
+#include <serveralgotythms.h>
 
 const QString MyClient::constNameUnknown = QString(".Unknown");
 
@@ -110,7 +108,7 @@ void MyClient::onReadyRead()
             QString name;
             in >> name;
             //проверяем его
-            if (!_serv->isNameValid(name))
+            if (!ServerAlgotythms::isNameValid(name))
             {
                 //отправляем ошибку
                 doSendCommand(comErrNameInvalid);

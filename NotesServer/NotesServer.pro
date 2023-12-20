@@ -17,12 +17,14 @@ TEMPLATE = app
 SOURCES += main.cpp\
     myserver.cpp \
     myclient.cpp \
-    dialog.cpp
+    dialog.cpp \
+    serveralgotythms.cpp
 
 HEADERS  += \
     myserver.h \
     dialog.h \
-    myclient.h
+    myclient.h \
+    serveralgotythms.h
 
 FORMS    += dialog.ui
 
