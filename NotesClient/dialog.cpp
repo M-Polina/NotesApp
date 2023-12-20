@@ -1,5 +1,6 @@
 #include "dialog.h"
 #include "ui_dialog.h"
+#include "algorythms.h"
 
 #include <QtGui>
 #include <QDebug>
@@ -126,22 +127,6 @@ void Dialog::onSokReadyRead()
             AddToLog("["+user+"]: "+message);
         }
         break;
-        // case MyClient::comAllMessages:
-        // {
-        //     QString mes_arr_length;
-        //     in >> mes_arr_length;
-        //     quint8 mes_len = mes_arr_length.toUInt();
-        //     qDebug() << "messages array len: " << mes_arr_length;
-        //     qDebug() << "messages array len: " << mes_len;
-        //     for (int i=0; i < mes_len; i++) {
-        //         QString user;
-        //         in >> user;
-        //         QString message;
-        //         in >> message;
-        //         AddToLog("["+user+"]: " + message);
-        //     }
-        // }
-        break;
         case MyClient::comMessageToUsers:
         {
             QString user;
@@ -199,7 +184,7 @@ void Dialog::onSokConnected()
     ui->pbConnect->setEnabled(false);
     ui->pbDisconnect->setEnabled(true);
     _blockSize = 0;
-    AddToLog("Connected to"+_sok->peerAddress().toString()+":"+QString::number(_sok->peerPort()),Qt::green);
+    AddToLog(Algorythms::makeConnectionNotifyString(_sok->peerAddress(), _sok->peerPort()), Qt::green);
 
     //try autch
     QByteArray block;
@@ -219,7 +204,7 @@ void Dialog::onSokDisconnected()
     ui->pbDisconnect->setEnabled(false);
     ui->pbSend->setEnabled(false);
     ui->lwUsers->clear();
-    AddToLog("Disconnected from"+_sok->peerAddress().toString()+":"+QString::number(_sok->peerPort()), Qt::green);
+    AddToLog(Algorythms::makeDisconnectionNotifyString(_sok->peerAddress(), _sok->peerPort()), Qt::green);
 }
 
 void Dialog::on_pbConnect_clicked()
@@ -269,5 +254,4 @@ void Dialog::on_pbSend_clicked()
 void Dialog::AddToLog(QString text, QColor color)
 {
     ui->lwLog->insertItem(0, QTime::currentTime().toString()+" "+text);
-    // ui->lwLog->item(0)->setTextColo(color);
 }

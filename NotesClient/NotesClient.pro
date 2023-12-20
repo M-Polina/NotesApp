@@ -13,12 +13,14 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
+    algorythms.cpp \
         dialog.cpp \
         # myserver.cpp \
-        # myclient.cpp
+         # myclient.cpp
 
 HEADERS  += dialog.h \
             # myserver.h \
+            algorythms.h \
             myclient.h
 
 
