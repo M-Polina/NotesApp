@@ -7,7 +7,7 @@ QListWidget#lwLog {
         font-size: 16px
     }
 
-QListWidget::item {
+QListWidget#lwLog::item {
 background-color: lightgreen;
         color: black;
         margin: 6px 4px 4px 6px;
@@ -15,6 +15,25 @@ background-color: lightgreen;
         border-radius: 6px;
         font-size: 16px
 }
+
+QListWidget#lwUsers::item {
+background-color: lightgrey;
+        color: black;
+        margin: 6px 4px 4px 6px;
+        padding: 4px 6px 4px 6px;
+        border-radius: 6px;
+        font-size: 16px
+}
+
+QListWidget#lwUsers::item:selected {
+        background-color: black;
+        color: white;
+        margin: 6px 4px 4px 6px;
+        padding: 4px 6px 4px 6px;
+        border-radius: 6px;
+        font-size: 16px
+}
+
 
 QListWidget#lwUsers {
         background-color: grey;
