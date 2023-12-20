@@ -8,6 +8,7 @@
 Dialog::Dialog(QWidget *parent) :QDialog(parent),ui(new Ui::Dialog)
 {
     ui->setupUi(this);
+    ui->lwLog->setWordWrap(true);
 
     QFile styleFile(":/style.qss");
     if(styleFile.open(QFile::ReadOnly)) {
@@ -20,7 +21,7 @@ Dialog::Dialog(QWidget *parent) :QDialog(parent),ui(new Ui::Dialog)
     connect(_sok, SIGNAL(readyRead()), this, SLOT(onSokReadyRead()));
     connect(_sok, SIGNAL(connected()), this, SLOT(onSokConnected()));
     connect(_sok, SIGNAL(disconnected()), this, SLOT(onSokDisconnected()));
-    connect(_sok, SIGNAL(error(QAbstractSocket::SocketError)),this, SLOT(onSokDisplayError(QAbstractSocket::SocketError)));
+    connect(_sok, SIGNAL(error(QAbstractSocket::SocketError)),_sok, SLOT(onSokDisplayError(QAbstractSocket::SocketError)));
 }
 
 Dialog::~Dialog()
