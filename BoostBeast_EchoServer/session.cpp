@@ -5,9 +5,11 @@
 #include "session.h"
 
 session::session(tcp::socket &&socket,
-                 std::shared_ptr<Account> accounts)
+                 std::shared_ptr<Account> accounts,
+                 std::shared_ptr<std::vector<std::string>> online_users)
         : ws_(std::move(socket)) {
     accounts_ = accounts;
+    onlineUsers_ = online_users;
 }
 
 void
@@ -57,19 +59,21 @@ session::on_read(
     std::cout << "gi: " << beast::buffers_to_string(buffer_.data()) << std::endl;
     boost::ignore_unused(bytes_transferred);
 
-    if (ec == websocket::error::closed)
+    if (ec == websocket::error::closed) {
+        std::cout << "socket closed" << std::endl;
+        auto iterator = std::find(onlineUsers_->begin(), onlineUsers_->end(), username_);
+        if (iterator != onlineUsers_->cend()) {
+            onlineUsers_->erase(iterator, iterator+1);
+        }
+        std::cout << onlineUsers_->size() << std::endl;
         return;
-
-//    if (beast::buffers_to_string(buffer_.data()) == "stop") {
-//        std::cout << "stopped" << std::endl;
-//        return;
-//    }
+    }
 
     if (ec)
         fail(ec, "read");
 
     std::string message = beast::buffers_to_string(buffer_.data());
-//    std::size_t messageSize = message.size();
+
     json request_json;
     try {
         request_json = JsonParser::stringToJson(message);
@@ -88,6 +92,12 @@ session::on_read(
             std::cout << "invalid username" << std::endl;
             return;
         } else {
+            auto iterator = std::find(onlineUsers_->begin(), onlineUsers_->end(), username);
+            if (iterator != onlineUsers_->cend()) {
+                std::cout << "already online username" << std::endl;
+                return;
+            }
+            onlineUsers_->push_back(username);
             std::shared_ptr<std::vector<Note>> notesList = accounts_->addAccount(username);
             username_ = username;
             std::string acc_notes = JsonParser::createNotesJsonString(*notesList);
@@ -113,11 +123,11 @@ session::on_read(
         buffer_.consume(buffer_.size());
 
         do_read();
-//        boost::beast::ostream(buf) << request_json;
 
     } else {
         std::cout << "wrong request type" << std::endl;
-//        return;
+        buffer_.consume(buffer_.size());
+        do_read();
     }
 //
 //    boost::beast::flat_buffer buf;

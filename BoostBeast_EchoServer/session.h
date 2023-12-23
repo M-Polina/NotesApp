@@ -34,7 +34,7 @@ class session : public std::enable_shared_from_this<session>
 
     public:
         explicit
-        session(tcp::socket&& socket, std::shared_ptr<Account> accounts);
+        session(tcp::socket&& socket, std::shared_ptr<Account> accounts, std::shared_ptr<std::vector<std::string>> online_users);
 
         void
         run();
@@ -57,6 +57,7 @@ class session : public std::enable_shared_from_this<session>
 
     public:
         std::shared_ptr<Account> accounts_;
+        std::shared_ptr<std::vector<std::string>> onlineUsers_;
         std::string username_;
 
 };

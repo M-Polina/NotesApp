@@ -8,12 +8,14 @@
 listener::listener(
             net::io_context& ioc,
             tcp::endpoint endpoint,
-            std::shared_ptr<Account> accounts)
+            std::shared_ptr<Account> accounts,
+            std::shared_ptr<std::vector<std::string>> online_users)
             : ioc_(ioc)
             , acceptor_(ioc)
 {
     beast::error_code ec;
     accounts_= accounts;
+    onlineUsers_ = online_users;
 
     // Open the acceptor
     acceptor_.open(endpoint.protocol(), ec);
@@ -69,7 +71,7 @@ void listener::on_accept(beast::error_code ec, tcp::socket socket)
     }
     else
     {
-        std::make_shared<session>(std::move(socket), accounts_)->run();
+        std::make_shared<session>(std::move(socket), accounts_, onlineUsers_)->run();
     }
 
     do_accept();

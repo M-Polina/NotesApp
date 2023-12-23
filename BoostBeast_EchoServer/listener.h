@@ -14,6 +14,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <vector>
 #include <thread>
 
 #include "fail.h"
@@ -31,12 +32,14 @@ class listener : public std::enable_shared_from_this<listener> {
         tcp::acceptor acceptor_;
 
     public:
-        listener(net::io_context& ioc, tcp::endpoint endpoint, std::shared_ptr<Account> accounts);
+        listener(net::io_context& ioc, tcp::endpoint endpoint, std::shared_ptr<Account> accounts,
+                 std::shared_ptr<std::vector<std::string>> online_users);
 
         void run();
 
     private:
         std::shared_ptr<Account> accounts_;
+        std::shared_ptr<std::vector<std::string>> onlineUsers_;
         void do_accept();
 
         void on_accept(beast::error_code ec, tcp::socket socket);
