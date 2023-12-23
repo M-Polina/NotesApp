@@ -1,8 +1,47 @@
 QLabel {
-    background-color: grey;
-    color: white;
     height: min-content;
-    padding: 4px 6px 4px 6px;
-    border-radius: 6px;
-    font-size: 16px
+    font-size: 16px;
 }
+
+#plainTextEdit {
+    border 1px solid;
+    border-radius:10px;
+    background-color: palette(base);
+    font-size: 14px;
+    padding: 1px 3px 1px 3px;
+}
+
+#headerLineEdit {
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: palette(base);
+    font-weight: bold;
+    padding: 3px 6px 3px 6px;
+}
+
+
+#timeLabel {
+color: black;
+font-size: 14px;
+}
+
+#noteFrame {
+    background-color: lightblue;
+    color: black;
+    height: max-content;
+    padding: 4px 6px 4px 6px;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+#noteHeader {
+    font-weight: bold;
+}
+
+
+#noteVLayout {
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+}
+
+
