@@ -7,6 +7,8 @@
 
 #include <vector>
 #include <map>
+#include <iostream>
+#include <format>
 
 #include "Note.h"
 
@@ -16,7 +18,7 @@ class Account {
 public:
     std::shared_ptr<std::vector<Note>> addAccount(std::string username);
     std::shared_ptr<std::vector<Note>> getAccountsNotes(std::string username);
-//    void addNoteToAccount(std::string username, Note new_note);
+    void addNoteToAccount(std::string username, Note new_note);
 private:
     std::map<std::string, std::shared_ptr<std::vector<Note>>> accountsList;
 };
