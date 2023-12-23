@@ -13,7 +13,7 @@ listener::listener(
             , acceptor_(ioc)
 {
     beast::error_code ec;
-    accountsList = accounts;
+    accounts_= accounts;
 
     // Open the acceptor
     acceptor_.open(endpoint.protocol(), ec);
@@ -69,7 +69,7 @@ void listener::on_accept(beast::error_code ec, tcp::socket socket)
     }
     else
     {
-        std::make_shared<session>(std::move(socket), std::move(accountsList))->run();
+        std::make_shared<session>(std::move(socket), accounts_)->run();
     }
 
     do_accept();

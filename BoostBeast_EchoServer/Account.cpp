@@ -8,6 +8,7 @@ Account::Account() {
 }
 
 std::shared_ptr<std::vector<Note>> Account::addAccount(std::string username) {
+    std::cout << accountsList.size() << std::endl;
     std::map<std::string, std::shared_ptr<std::vector<Note>>>::iterator it;
     it = accountsList.find(username);
 

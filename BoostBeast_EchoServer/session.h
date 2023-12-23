@@ -19,6 +19,7 @@
 #include "fail.h"
 #include "JsonParser.h"
 #include "Account.h"
+#include "ServerAlgorythms.h"
 
 namespace beast = boost::beast;
 namespace http = beast::http;
@@ -54,8 +55,9 @@ class session : public std::enable_shared_from_this<session>
                 beast::error_code ec,
                 std::size_t bytes_transferred);
 
-    private:
-        std::shared_ptr<Account> accountsList;
+    public:
+        std::shared_ptr<Account> accounts_;
+        std::string username_;
 
 };
 

@@ -19,6 +19,8 @@ add_executable(BoostBeast_EchoServer main.cpp nlohmann/json.hpp
         Note.h
         Account.cpp
         Account.h
+        ServerAlgorythms.cpp
+        ServerAlgorythms.h
 )
 
 target_include_directories(BoostBeast_EchoServer PUBLIC ${Boost_INCLUDE_DIRS})

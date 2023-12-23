@@ -36,7 +36,7 @@ class listener : public std::enable_shared_from_this<listener> {
         void run();
 
     private:
-        std::shared_ptr<Account> accountsList;
+        std::shared_ptr<Account> accounts_;
         void do_accept();
 
         void on_accept(beast::error_code ec, tcp::socket socket);
