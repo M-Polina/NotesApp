@@ -7,11 +7,13 @@
 
 listener::listener(
             net::io_context& ioc,
-            tcp::endpoint endpoint)
+            tcp::endpoint endpoint,
+            std::shared_ptr<Account> accounts)
             : ioc_(ioc)
             , acceptor_(ioc)
 {
     beast::error_code ec;
+    accountsList = accounts;
 
     // Open the acceptor
     acceptor_.open(endpoint.protocol(), ec);

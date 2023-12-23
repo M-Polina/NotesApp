@@ -18,9 +18,9 @@ int main(int argc, char* argv[])
 
     net::io_context ioc;
 
-//    auto accounts = std::make_shared<Account>(5);
+    auto accounts = std::make_shared<Account>();
 
-    std::make_shared<listener>(ioc, tcp::endpoint{tcp::v4(), port})->run();
+    std::make_shared<listener>(ioc, tcp::endpoint{tcp::v4(), port}, accounts)->run();
 
     ioc.run();
 

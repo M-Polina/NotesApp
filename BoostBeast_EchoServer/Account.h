@@ -13,9 +13,8 @@
 #include "Note.h"
 
 class Account {
-    Account();
-
 public:
+    Account();
     std::shared_ptr<std::vector<Note>> addAccount(std::string username);
     std::shared_ptr<std::vector<Note>> getAccountsNotes(std::string username);
     void addNoteToAccount(std::string username, Note new_note);
