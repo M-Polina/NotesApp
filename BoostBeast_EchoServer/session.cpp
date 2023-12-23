@@ -78,6 +78,11 @@ session::on_read(
     try {
         request_json = JsonParser::stringToJson(message);
     } catch (std::exception ex) {
+        auto iterator = std::find(onlineUsers_->begin(), onlineUsers_->end(), username_);
+        if (iterator != onlineUsers_->cend()) {
+            onlineUsers_->erase(iterator, iterator+1);
+        }
+
         std::cerr << ex.what();
         return;
     }
