@@ -1,3 +1,0 @@
-/Users/andreymarusin/Polina/C_plus_Labs/BoostBeast_EchoServer/cmake-build-debug/CMakeFiles/BoostBeast_EchoServer.dir
-/Users/andreymarusin/Polina/C_plus_Labs/BoostBeast_EchoServer/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/andreymarusin/Polina/C_plus_Labs/BoostBeast_EchoServer/cmake-build-debug/CMakeFiles/rebuild_cache.dir

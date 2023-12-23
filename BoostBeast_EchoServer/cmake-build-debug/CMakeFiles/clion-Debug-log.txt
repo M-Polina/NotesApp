@@ -1,4 +1,0 @@
-"/Users/andreymarusin/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/232.9921.42/CLion.app/Contents/bin/cmake/mac/bin/cmake" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=/Users/andreymarusin/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/232.9921.42/CLion.app/Contents/bin/ninja/mac/ninja" -G Ninja -S /Users/andreymarusin/Polina/C_plus_Labs/BoostBeast_EchoServer -B /Users/andreymarusin/Polina/C_plus_Labs/BoostBeast_EchoServer/cmake-build-debug
--- Configuring done (0.1s)
--- Generating done (0.0s)
--- Build files have been written to: /Users/andreymarusin/Polina/C_plus_Labs/BoostBeast_EchoServer/cmake-build-debug
