@@ -4,9 +4,11 @@
 
 #include "session.h"
 
-session::session(tcp::socket&& socket)
+session::session(tcp::socket&& socket,
+                 std::shared_ptr<Account> accounts)
             : ws_(std::move(socket))
 {
+    accountsList = accounts;
 }
 
 void

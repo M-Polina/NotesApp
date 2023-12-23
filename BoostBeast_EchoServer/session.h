@@ -33,7 +33,7 @@ class session : public std::enable_shared_from_this<session>
 
     public:
         explicit
-        session(tcp::socket&& socket);
+        session(tcp::socket&& socket, std::shared_ptr<Account> accounts);
 
         void
         run();
@@ -53,6 +53,10 @@ class session : public std::enable_shared_from_this<session>
         on_write(
                 beast::error_code ec,
                 std::size_t bytes_transferred);
+
+    private:
+        std::shared_ptr<Account> accountsList;
+
 };
 
 
