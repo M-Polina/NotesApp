@@ -1,7 +1,3 @@
-//
-// Created by Andrey Marusin on 23.12.2023.
-//
-
 #ifndef BOOSTBEAST_ECHOSERVER_FAIL_H
 #define BOOSTBEAST_ECHOSERVER_FAIL_H
 

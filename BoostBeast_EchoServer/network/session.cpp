@@ -1,7 +1,3 @@
-//
-// Created by Andrey Marusin on 23.12.2023.
-//
-
 #include "session.h"
 
 session::session(tcp::socket &&socket,
@@ -63,7 +59,7 @@ session::on_read(
         std::cout << "socket closed" << std::endl;
         auto iterator = std::find(onlineUsers_->begin(), onlineUsers_->end(), username_);
         if (iterator != onlineUsers_->cend()) {
-            onlineUsers_->erase(iterator, iterator+1);
+            onlineUsers_->erase(iterator, iterator + 1);
         }
         std::cout << onlineUsers_->size() << std::endl;
         return;
@@ -78,9 +74,11 @@ session::on_read(
     try {
         request_json = JsonParser::stringToJson(message);
     } catch (std::exception ex) {
+        send_message(JsonParser::createErrorJsonString("Not a json request."));
+
         auto iterator = std::find(onlineUsers_->begin(), onlineUsers_->end(), username_);
         if (iterator != onlineUsers_->cend()) {
-            onlineUsers_->erase(iterator, iterator+1);
+            onlineUsers_->erase(iterator, iterator + 1);
         }
 
         std::cerr << ex.what();
@@ -89,17 +87,20 @@ session::on_read(
 
     std::string request_type = request_json.at("type");
 
-    boost::beast::flat_buffer buf;
+//    boost::beast::flat_buffer buf;
+    buffer_.consume(buffer_.size());
 
     if (request_type == LOGIN_TYPE) {
         std::string username = JsonParser::parseLoginJson(request_json);
         if (ServerAlgorythms::isNameValid(username) == false) {
             std::cout << "invalid username" << std::endl;
+            send_message(JsonParser::createErrorJsonString("Invalid username. Should be >=3, <=50."));
             return;
         } else {
             auto iterator = std::find(onlineUsers_->begin(), onlineUsers_->end(), username);
             if (iterator != onlineUsers_->cend()) {
                 std::cout << "already online username" << std::endl;
+                send_message(JsonParser::createErrorJsonString("This user is already online."));
                 return;
             }
             onlineUsers_->push_back(username);
@@ -112,17 +113,17 @@ session::on_read(
 //        accounts_->addNoteToAccount(username, note0);
 //        std::cout << accounts_->acc << std::endl;
 
-            boost::beast::ostream(buf) << acc_notes;
+            boost::beast::ostream(buffer_) << acc_notes;
             ws_.text(ws_.got_text());
             ws_.async_write(
-                    buf.data(),
+                    buffer_.data(),
                     beast::bind_front_handler(
                             &session::on_write,
                             shared_from_this()));
         }
     } else if (request_type == NOTES_TYPE) {
         std::vector<Note> got_notes = JsonParser::parseNotesJson(request_json);
-        for (Note note : got_notes) {
+        for (Note note: got_notes) {
             accounts_->addNoteToAccount(username_, note);
         }
         buffer_.consume(buffer_.size());
@@ -131,6 +132,7 @@ session::on_read(
 
     } else {
         std::cout << "wrong request type" << std::endl;
+        send_message(JsonParser::createErrorJsonString("Wrong json request type."));
         buffer_.consume(buffer_.size());
         do_read();
     }
@@ -177,3 +179,24 @@ session::on_write(
     do_read();
 }
 
+void session::send_message(std::string message) {
+    buffer_.consume(buffer_.size());
+    boost::beast::ostream(buffer_) << message;
+    ws_.text(ws_.got_text());
+    ws_.async_write(
+            buffer_.data(),
+            beast::bind_front_handler(
+                    &session::send_to_client,
+                    shared_from_this()));
+}
+
+void session::send_to_client(
+        beast::error_code ec,
+        std::size_t bytes_transferred) {
+    boost::ignore_unused(bytes_transferred);
+
+    if (ec)
+        return fail(ec, "send_to_client");
+
+    buffer_.consume(buffer_.size());
+}

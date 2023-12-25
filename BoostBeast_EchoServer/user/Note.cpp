@@ -1,8 +1,5 @@
-//
-// Created by Andrey Marusin on 23.12.2023.
-//
-
 #include "Note.h"
+
 
 Note::Note(std::string header, std::string noteText, std::string creationTime) {
     header_ = header;

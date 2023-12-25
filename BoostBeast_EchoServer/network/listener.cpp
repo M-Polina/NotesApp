@@ -1,7 +1,3 @@
-//
-// Created by Andrey Marusin on 23.12.2023.
-//
-
 #include "listener.h"
 
 

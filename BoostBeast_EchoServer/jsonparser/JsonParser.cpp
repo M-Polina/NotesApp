@@ -1,7 +1,3 @@
-//
-// Created by Andrey Marusin on 23.12.2023.
-//
-
 #include "JsonParser.h"
 #include <iostream>
 //
@@ -22,7 +18,7 @@
 //std::cout << s << std::endl;
 //std::cout << j.dump() << std::endl;
 
-JsonParser::JsonParser() { }
+JsonParser::JsonParser() {}
 
 std::string JsonParser::createLoginJsonString(std::string username) {
     json loginJson;
@@ -37,7 +33,7 @@ std::string JsonParser::createNotesJsonString(std::vector<Note> &notes) {
     notesJson["type"] = NOTES_TYPE;
 
     auto jsonNotes = json::array();
-    for(auto i = 0; i < notes.size(); ++i) {
+    for (auto i = 0; i < notes.size(); ++i) {
         json note;
         note["type"] = "note";
         note["header"] = notes[i].getHeader();
@@ -49,7 +45,7 @@ std::string JsonParser::createNotesJsonString(std::vector<Note> &notes) {
 
     notesJson["notes"] = jsonNotes;
 
-    return  notesJson.dump();
+    return notesJson.dump();
 }
 
 json JsonParser::stringToJson(std::string json_string) {
@@ -66,17 +62,17 @@ std::vector<Note> &JsonParser::parseNotesJson(json notes_json) {
     std::string type = notes_json.at("type");
 
     if (type != NOTES_TYPE) {
-        std::cout  << "parsing Login Json: Not notesList type!";
+        std::cout << "parsing Login Json: Not notesList type!";
         return *notesList;
     }
 
 
-    for (auto &json_note : notes_json.at("notes")) {
-        Note note(json_note.at("header"), json_note.at("content"),  json_note.at("creationTime"));
+    for (auto &json_note: notes_json.at("notes")) {
+        Note note(json_note.at("header"), json_note.at("content"), json_note.at("creationTime"));
         notesList->push_back(note);
     }
 
-    for (Note n : *notesList) {
+    for (Note n: *notesList) {
         std::cout << n.getHeader() << " " << n.getContent() << " " << n.getCreationTime() << std::endl;
 
     }
@@ -91,11 +87,36 @@ std::string JsonParser::parseLoginJson(json json) {
     std::string type = json.at("type");
 
     if (type != LOGIN_TYPE) {
-        std::cout  << "parsing Login Json: Not login type!";
+        std::cout << "parsing Login Json: Not login type!";
         return "";
     }
 
     std::string username = json.at("username");
 
     return username;
+}
+
+std::string JsonParser::parseErrorJson(json error_json) {
+    if (error_json.find("type") == error_json.end()) {
+        return "";
+    }
+    std::string type = error_json.at("type");
+
+    if (type != ERROR_TYPE) {
+        std::cout << "parsing Error Json: Not error type!";
+        return "";
+    }
+
+    std::string error = error_json.at("errorText");
+
+    return error;
+}
+
+std::string JsonParser::createErrorJsonString(std::string error) {
+    json errorJson;
+    errorJson["type"] = ERROR_TYPE;
+
+    errorJson["errorText"] = error;
+
+    return errorJson.dump();
 }

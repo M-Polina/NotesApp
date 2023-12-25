@@ -1,7 +1,3 @@
-//
-// Created by Andrey Marusin on 23.12.2023.
-//
-
 #ifndef BOOSTBEAST_ECHOSERVER_LISTENER_H
 #define BOOSTBEAST_ECHOSERVER_LISTENER_H
 
@@ -17,7 +13,7 @@
 #include <vector>
 #include <thread>
 
-#include "fail.h"
+#include "../functions/fail.h"
 #include "session.h"
 
 

@@ -1,10 +1,7 @@
-//
-// Created by Andrey Marusin on 23.12.2023.
-//
-
 #include "Account.h"
+
 Account::Account() {
-     std::map<std::string, std::shared_ptr<std::vector<Note>>> accountsList;
+    std::map<std::string, std::shared_ptr<std::vector<Note>>> accountsList;
 }
 
 std::shared_ptr<std::vector<Note>> Account::addAccount(std::string username) {
