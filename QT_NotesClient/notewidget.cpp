@@ -13,10 +13,13 @@ NoteWidget::NoteWidget(QWidget *parent) :
 
     noteHeader = new QLabel(noteFrame);
     noteText = new QLabel(noteFrame);
+
     noteHeader->setObjectName("noteHeader");
     noteText->setObjectName("noteText");
     noteHeader->setWordWrap(true);
     noteText->setWordWrap(true);
+    noteHeader->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    noteText->setTextInteractionFlags(Qt::TextSelectableByMouse);
 
     QVBoxLayout *vbox = new QVBoxLayout(this);
     vbox->setAlignment(Qt::AlignLeft);

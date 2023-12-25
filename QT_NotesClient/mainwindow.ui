@@ -21,29 +21,13 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="3" column="2">
+    <item row="4" column="2">
      <widget class="QPushButton" name="sendButton">
       <property name="enabled">
        <bool>true</bool>
       </property>
       <property name="text">
        <string>Send</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QPlainTextEdit" name="plainTextEdit">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>20</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
-        <height>100</height>
-       </size>
       </property>
      </widget>
     </item>
@@ -54,23 +38,7 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="1">
-     <widget class="QLineEdit" name="loginLineEdit">
-      <property name="font">
-       <font>
-        <pointsize>13</pointsize>
-        <strikeout>false</strikeout>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">font-size: 16;</string>
-      </property>
-      <property name="text">
-       <string>Login</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1" colspan="2">
+    <item row="2" column="1" colspan="2">
      <widget class="QScrollArea" name="messagesScrollArea">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -93,16 +61,58 @@
          <x>0</x>
          <y>0</y>
          <width>525</width>
-         <height>333</height>
+         <height>307</height>
         </rect>
        </property>
       </widget>
      </widget>
     </item>
-    <item row="2" column="1">
+    <item row="3" column="1">
      <widget class="QLineEdit" name="headerLineEdit">
       <property name="text">
        <string>New note</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="loginLineEdit">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>13</pointsize>
+        <strikeout>false</strikeout>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font-size: 16;</string>
+      </property>
+      <property name="text">
+       <string>Login</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QPlainTextEdit" name="plainTextEdit">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>100</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1" colspan="2">
+     <widget class="QLabel" name="errorLabel">
+      <property name="text">
+       <string/>
       </property>
      </widget>
     </item>

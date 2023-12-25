@@ -11,12 +11,28 @@ QLabel {
     padding: 1px 3px 1px 3px;
 }
 
+#errorLabel {
+    font-size: 14px;
+    color: red;
+    background-color: pallette(base);
+    qproperty-alignment: AlignCenter;
+    border-radius: 6px;
+}
+
 #headerLineEdit {
     border-radius: 8px;
     font-size: 16px;
     background-color: palette(base);
     font-weight: bold;
     padding: 3px 6px 3px 6px;
+}
+
+#loginLineEdit {
+    border: 1px solid lightgrey;
+    border-radius: 6px;
+    font-size: 15px;
+    background-color: palette(base);
+    padding: 1px 3px 1px 3px;
 }
 
 

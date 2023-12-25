@@ -8,7 +8,7 @@ std::string JsonParser::createLoginJsonString(std::string username) {
     json loginJson;
     loginJson["type"] = LOGIN_TYPE;
     loginJson["username"] = username;
-    std::cout << loginJson.dump() << std::endl;
+
     return loginJson.dump();
 }
 
@@ -56,11 +56,6 @@ std::vector<Note> &JsonParser::parseNotesJson(json notes_json) {
         notesList->push_back(note);
     }
 
-    for (Note n : *notesList) {
-        std::cout << n.getHeader() << " " << n.getContent() << " " << n.getCreationTime() << std::endl;
-
-    }
-
     return *notesList;
 }
 
@@ -78,4 +73,29 @@ std::string JsonParser::parseLoginJson(json json) {
     std::string username = json.at("username");
 
     return username;
+}
+
+std::string JsonParser::parseErrorJson(json error_json) {
+    if (error_json.find("type") == error_json.end()) {
+        return "";
+    }
+    std::string type = error_json.at("type");
+
+    if (type != ERROR_TYPE) {
+        std::cout << "parsing Error Json: Not error type!";
+        return "";
+    }
+
+    std::string error = error_json.at("errorText");
+
+    return error;
+}
+
+std::string JsonParser::createErrorJsonString(std::string error) {
+    json errorJson;
+    errorJson["type"] = ERROR_TYPE;
+
+    errorJson["errorText"] = error;
+
+    return errorJson.dump();
 }

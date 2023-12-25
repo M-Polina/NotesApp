@@ -29,17 +29,14 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-// private slots:
-//     void on_sendButton_clicked();
-//     void on_connectButton_clicked();
-
 private Q_SLOTS:
+    void on_sendButton_clicked();
+    void on_connectButton_clicked();
+    void display_error_message(QString error_message);
+
     void onConnected();
     void onDisconnected();
     void processTextMessage(QString message);
-    void on_sendButton_clicked();
-    void on_connectButton_clicked();
-
 
 private:
     QWebSocket m_webSocket;
@@ -53,6 +50,7 @@ private:
 
     void SendToServer(QString header, QString content, QString creationTime);
     void AddTextLabel(QString creationTime, QString header, QString str);
-
+    void clearNotesArea();
 };
+
 #endif // MAINWINDOW_H
