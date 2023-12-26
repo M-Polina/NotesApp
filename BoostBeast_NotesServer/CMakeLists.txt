@@ -4,8 +4,7 @@ project(BoostBeast_EchoServer)
 set(CMAKE_CXX_STANDARD 17)
 
 find_package(Boost REQUIRED)
-include_directories(${Boost_INCLUDE_DIRS})
-
+include_directories(${Boost_INCLUDE_DIRS} nlohmann jsonparser functions network user)
 add_executable(BoostBeast_EchoServer main.cpp nlohmann/json.hpp
         jsonparser/JsonParser.cpp
         jsonparser/JsonParser.h
@@ -22,6 +21,8 @@ add_executable(BoostBeast_EchoServer main.cpp nlohmann/json.hpp
         functions/ServerAlgorythms.cpp
         functions/ServerAlgorythms.h
 )
+
+add_subdirectory(tests)
 
 target_include_directories(BoostBeast_EchoServer PUBLIC ${Boost_INCLUDE_DIRS})
 target_link_libraries(BoostBeast_EchoServer ${Boost_LIBRARIES})

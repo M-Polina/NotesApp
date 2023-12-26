@@ -12,10 +12,10 @@
 #include <string>
 #include <thread>
 
-#include "../functions/fail.h"
-#include "../jsonparser/JsonParser.h"
-#include "../user/Account.h"
-#include "../functions/ServerAlgorythms.h"
+#include "fail.h"
+#include "JsonParser.h"
+#include "Account.h"
+#include "ServerAlgorythms.h"
 
 namespace beast = boost::beast;
 namespace http = beast::http;

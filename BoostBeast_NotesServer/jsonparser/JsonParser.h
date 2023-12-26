@@ -1,9 +1,9 @@
 #ifndef BOOSTBEAST_ECHOSERVER_JSONPARSER_H
 #define BOOSTBEAST_ECHOSERVER_JSONPARSER_H
 
-#include <istream>
-#include "../nlohmann/json.hpp"
-#include "../user/Note.h"
+#include <iostream>
+#include "json.hpp"
+#include "Note.h"
 
 using json = nlohmann::json;
 static const std::string LOGIN_TYPE = "login";

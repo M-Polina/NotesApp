@@ -13,7 +13,7 @@
 #include <vector>
 #include <thread>
 
-#include "../functions/fail.h"
+#include "fail.h"
 #include "session.h"
 
 
