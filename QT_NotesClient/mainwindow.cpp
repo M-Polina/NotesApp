@@ -26,6 +26,8 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::setUpUi() {
+    setWindowTitle("Notes App");
+
     QFile styleFile(":/style.qss");
     if(styleFile.open(QFile::ReadOnly)) {
         QString StyleSheet = QLatin1String(styleFile.readAll());
@@ -77,7 +79,7 @@ void MainWindow::onDisconnected()
     ui->loginLineEdit->setStyleSheet(styleSheet());
     ui->connectButton->setVisible(true);
 
-    display_error_message(this->errorLabel, QString::fromStdString("Connection error"));
+    display_error_message(this->errorLabel, this->errorLabel->text() + '\n' + QString::fromStdString("Connection error"));
 
     m_webSocket.close();
 }
