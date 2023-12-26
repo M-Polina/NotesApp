@@ -1,7 +1,8 @@
 #include "notewidget.h"
 
 
-NoteWidget::NoteWidget(QWidget *parent) :
+NoteWidget::
+    NoteWidget(QWidget *parent) :
     QWidget(parent)
 {
     timeLabel = new QLabel(this);
@@ -36,13 +37,11 @@ NoteWidget::NoteWidget(QWidget *parent) :
     vbox->addWidget(timeLabel);
     vbox->addWidget(noteFrame);
 
-
 }
 
-void NoteWidget::SetInfo(QString creationTime, QString header, QString str) {
+void NoteWidget::setInfo(QString creationTime, QString header, QString str) {
     timeLabel->setText(creationTime);
     noteHeader->setText(header);
     noteText->setText(str);
 }
-
 

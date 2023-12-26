@@ -15,7 +15,7 @@ class NoteWidget : public QWidget
 
 public:
     NoteWidget(QWidget *parent = nullptr);
-    void SetInfo(QString creationTime, QString header, QString str);
+    void setInfo(QString creationTime, QString header, QString str);
 
 private:
     QLabel *timeLabel;

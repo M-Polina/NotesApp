@@ -12,7 +12,7 @@
 #include<QTextEdit>
 #include <QtCore/QObject>
 #include <QtWebSockets/QWebSocket>
-#include <notewidget.h>
+#include "notewidget.h"
 #include "JsonParser.h"
 
 QT_BEGIN_NAMESPACE
@@ -32,7 +32,6 @@ public:
 private Q_SLOTS:
     void on_sendButton_clicked();
     void on_connectButton_clicked();
-    void display_error_message(QString error_message);
 
     void onConnected();
     void onDisconnected();
@@ -46,11 +45,14 @@ private:
     QByteArray Data;
     QWidget* messageWidget;
     QVBoxLayout* vbox;
+    QLabel* errorLabel;
     QList<NoteWidget *> noteWidgets;
 
-    void SendToServer(QString header, QString content, QString creationTime);
-    void AddTextLabel(QString creationTime, QString header, QString str);
+    void sendToServer(QString header, QString content, QString creationTime);
+    void display_error_message(QLabel *label, QString error_message);
+    void addNoteWidget(QVBoxLayout *vbox, QString creationTime, QString header, QString str);
     void clearNotesArea();
+    void setUpUi();
 };
 
 #endif // MAINWINDOW_H

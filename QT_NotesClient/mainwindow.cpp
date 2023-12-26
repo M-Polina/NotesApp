@@ -13,11 +13,26 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    setUpUi();
+
+    connect(&m_webSocket, &QWebSocket::connected, this, &MainWindow::onConnected);
+    connect(&m_webSocket, &QWebSocket::textMessageReceived, this, &MainWindow::processTextMessage);
+    connect(&m_webSocket, &QWebSocket::disconnected, this, &MainWindow::onDisconnected);
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::setUpUi() {
     QFile styleFile(":/style.qss");
     if(styleFile.open(QFile::ReadOnly)) {
         QString StyleSheet = QLatin1String(styleFile.readAll());
         this->setStyleSheet(StyleSheet);
     }
+
+    errorLabel = ui->errorLabel;
     ui->errorLabel->setVisible(false);
 
     ui->messagesScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -28,22 +43,12 @@ MainWindow::MainWindow(QWidget *parent)
     this->vbox = new QVBoxLayout();
 
     this->vbox->setSizeConstraint(QLayout::SetFixedSize);
+    this->vbox->setObjectName("notesVLayout");
 
 
-    this->messageWidget->setLayout(vbox);
+    this->messageWidget->setLayout(this->vbox);
 
-    ui->messagesScrollArea->setWidget(messageWidget);
-
-    connect(&m_webSocket, &QWebSocket::connected, this, &MainWindow::onConnected);
-    connect(&m_webSocket, &QWebSocket::textMessageReceived, this, &MainWindow::processTextMessage);
-    // connect(&m_webSocket, &QWebSocket::binaryMessageReceived, this, &MainWindow::processBinaryMessage);
-    // connect(&m_webSocket, &QWebSocket::disconnected, this, &MainWindow::closed);
-    connect(&m_webSocket, &QWebSocket::disconnected, this, &MainWindow::onDisconnected);
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
+    ui->messagesScrollArea->setWidget(this->messageWidget);
 }
 
 void MainWindow::onConnected()
@@ -72,7 +77,7 @@ void MainWindow::onDisconnected()
     ui->loginLineEdit->setStyleSheet(styleSheet());
     ui->connectButton->setVisible(true);
 
-    display_error_message(QString::fromStdString("Connection error"));
+    display_error_message(this->errorLabel, QString::fromStdString("Connection error"));
 
     m_webSocket.close();
 }
@@ -83,8 +88,8 @@ void MainWindow::processTextMessage(QString message) {
     json reply_json;
     try {
         reply_json = JsonParser::stringToJson(message.toStdString());
-    } catch (std::exception ex) {
-        qDebug() << "Not a json message recived!";
+    } catch (json::parse_error& ex) {
+        qDebug() << "PJson parse error. Not a json message recived!";
         return;
     }
 
@@ -93,13 +98,13 @@ void MainWindow::processTextMessage(QString message) {
     if (request_type == NOTES_TYPE) {
         std::vector<Note> got_notes = JsonParser::parseNotesJson(reply_json);
         for (auto note : got_notes) {
-            AddTextLabel(QString::fromStdString(note.getCreationTime()),
+            addNoteWidget(this->vbox, QString::fromStdString(note.getCreationTime()),
                          QString::fromStdString(note.getHeader()),
                          QString::fromStdString(note.getContent()));
         }
     } else if (request_type == ERROR_TYPE){
         std::string error_message = JsonParser::parseErrorJson(reply_json);
-        display_error_message(QString::fromStdString(error_message));
+        display_error_message(ui->errorLabel, QString::fromStdString(error_message));
     } else {
         qDebug() << "Wrong request type";
         return;
@@ -121,7 +126,7 @@ void MainWindow::on_connectButton_clicked()
     m_webSocket.open(QUrl(m_url));
 }
 
-void MainWindow::SendToServer(QString header, QString content, QString creationTime)
+void MainWindow::sendToServer(QString header, QString content, QString creationTime)
 {
     std::vector<Note> notes;
     Note new_note(header.toStdString(), content.toStdString(), creationTime.toStdString());
@@ -135,11 +140,11 @@ void MainWindow::SendToServer(QString header, QString content, QString creationT
 }
 
 
-void MainWindow::AddTextLabel(QString creationTime, QString header, QString str) {
+void MainWindow::addNoteWidget(QVBoxLayout *vbox, QString creationTime, QString header, QString str) {
     NoteWidget *note = new NoteWidget();
-    note->SetInfo(creationTime, header, str);
+    note->setInfo(creationTime, header, str);
 
-    this->vbox->addWidget(note);
+    this->vbox->insertWidget(0, note);
     noteWidgets.append(note);
 }
 
@@ -151,14 +156,14 @@ void MainWindow::on_sendButton_clicked()
 
     QString creationTime = QDate::currentDate().toString() + " " + QTime::currentTime().toString();
 
-    AddTextLabel(creationTime, ui->headerLineEdit->text(), ui->plainTextEdit->toPlainText());
-    SendToServer(ui->headerLineEdit->text(), ui->plainTextEdit->toPlainText(), creationTime);
+    addNoteWidget(this->vbox, creationTime, ui->headerLineEdit->text(), ui->plainTextEdit->toPlainText());
+    sendToServer(ui->headerLineEdit->text(), ui->plainTextEdit->toPlainText(), creationTime);
 }
 
-void MainWindow::display_error_message(QString error_message) {
-    ui->errorLabel->clear();
-    ui->errorLabel->setVisible(true);
-    ui->errorLabel->setText(error_message);
+void MainWindow::display_error_message(QLabel *label, QString error_message) {
+    label->clear();
+    label->setVisible(true);
+    label->setText(error_message);
 }
 
 void MainWindow::clearNotesArea() {
@@ -170,4 +175,3 @@ void MainWindow::clearNotesArea() {
 
     noteWidgets.clear();
 }
-
